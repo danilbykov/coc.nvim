@@ -3,6 +3,7 @@ import { CancellationToken, CancellationTokenSource, CodeAction, CodeActionConte
 import commands from './commands'
 import diagnosticManager from './diagnostic/manager'
 import { CodeActionProvider, CodeLensProvider, CompletionItemProvider, DeclarationProvider, DefinitionProvider, DocumentColorProvider, DocumentFormattingEditProvider, DocumentLinkProvider, DocumentRangeFormattingEditProvider, DocumentSymbolProvider, FoldingContext, FoldingRangeProvider, HoverProvider, ImplementationProvider, OnTypeFormattingEditProvider, ReferenceContext, ReferenceProvider, RenameProvider, SelectionRangeProvider, SignatureHelpProvider, TypeDefinitionProvider, WorkspaceSymbolProvider } from './provider'
+import { TreeViewProvider } from './tree/provider'
 import CodeActionManager from './provider/codeActionmanager'
 import CodeLensManager from './provider/codeLensManager'
 import DeclarationManager from './provider/declarationManager'
@@ -21,6 +22,7 @@ import SelectionRangeManager from './provider/rangeManager'
 import ReferenceManager from './provider/referenceManager'
 import RenameManager from './provider/renameManager'
 import SignatureManager from './provider/signatureManager'
+import { TreeModel, TreeModelManager } from './provider/TreeModelManager'
 import TypeDefinitionManager from './provider/typeDefinitionManager'
 import WorkspaceSymbolManager from './provider/workspaceSymbolsManager'
 import snippetManager from './snippets/manager'
@@ -102,6 +104,7 @@ class Languages {
   private implementationManager = new ImplementationManager()
   private codeLensManager = new CodeLensManager()
   private selectionRangeManager = new SelectionRangeManager()
+  private treeModelManager = new TreeModelManager()
   private cancelTokenSource: CancellationTokenSource = new CancellationTokenSource()
   private completionItemKindMap: Map<CompletionItemKind, string>
 
@@ -282,6 +285,10 @@ class Languages {
     return this.formatRangeManager.register(selector, provider, priority)
   }
 
+  public registerTreeViewsProvider(provider: TreeViewProvider): Disposable {
+    return this.treeModelManager.register(provider)
+  }
+
   public shouldTriggerSignatureHelp(document: TextDocument, triggerCharacter: string): boolean {
     return this.signatureManager.shouldTrigger(document, triggerCharacter)
   }
@@ -443,6 +450,14 @@ class Languages {
   @check
   public async provideDocumentOnTypeEdits(character: string, document: TextDocument, position: Position): Promise<TextEdit[] | null> {
     return this.onTypeFormatManager.onCharacterType(character, document, position, this.token)
+  }
+
+  public getTreeViews(): string[] | undefined {
+    return this.treeModelManager.getViews()
+  }
+
+  public getTreeModel(viewId: string): TreeModel | undefined {
+    return this.treeModelManager.getTreeModel(viewId)
   }
 
   public hasOnTypeProvider(character: string, document: TextDocument): boolean {

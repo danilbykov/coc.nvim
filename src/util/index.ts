@@ -168,3 +168,18 @@ export function concurrent(fns: (() => Promise<any>)[], limit = Infinity): Promi
     next()
   })
 }
+
+export function sequence<X, R>(
+  xs: X[],
+  func: (x: X, n: number, arr: X[]) => Promise<R>
+): Promise<R[]> {
+  const seqInternal = async (acc: R[], idx: number): Promise<R[]> => {
+    if (idx < xs.length) {
+      const newR = await func(xs[idx], idx, xs)
+      return seqInternal(acc.concat(newR), idx + 1)
+    } else {
+      return acc
+    }
+  }
+  return seqInternal([], 0)
+}

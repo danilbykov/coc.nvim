@@ -450,7 +450,6 @@ function stateString(state: State): string {
     case State.Stopped:
       return 'stopped'
   }
-  return 'unknown'
 }
 
 export default new ServiceManager()

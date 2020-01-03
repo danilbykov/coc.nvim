@@ -2,7 +2,7 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import cp, { SpawnOptions } from 'child_process'
+import cp, { SpawnOptions as ChildSpawnOptions } from 'child_process'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
@@ -33,7 +33,7 @@ declare var v8debug: any
 export interface Executable {
   command: string
   args?: string[]
-  options?: SpawnOptions
+  options?: ChildSpawnOptions
 }
 
 namespace Executable {
@@ -349,7 +349,7 @@ export class LanguageClient extends BaseLanguageClient {
       if (options.execArgv) options.execArgv.forEach(element => args.push(element))
       if (transport != TransportKind.ipc) args.push(node.module)
       if (node.args) node.args.forEach(element => args.push(element))
-      let execOptions: SpawnOptions = Object.create(null)
+      let execOptions: ChildSpawnOptions = Object.create(null)
       execOptions.cwd = serverWorkingDir
       execOptions.env = getEnvironment(options.env)
       let pipeName: string | undefined

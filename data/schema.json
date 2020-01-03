@@ -979,6 +979,75 @@
           ]
         }
       }
+    },
+    "treeviews.initialWidth": {
+      "type": "number",
+      "default": 40,
+      "description": "Initial TreeViews panel width"
+    },
+    "treeviews.alignment": {
+      "type": "string",
+      "default": "left",
+      "enum": ["left", "right"],
+      "description": "TreeViews panel position"
+    },
+    "treeviews.initialViews": {
+      "type": "object",
+      "default": [
+        {
+          "name": "metalsCompile",
+          "size": 10,
+          "expanded": [
+            [
+              "metals://ongoing-compilations"
+            ]
+          ]
+        },
+        {
+          "name": "metalsBuild",
+          "size": 40,
+          "expanded": [
+            [
+              "projects:"
+            ]
+          ]
+        }
+      ]
+    },
+    "treeviews.toggleNode": {
+      "type": "string",
+      "default": "<CR>",
+      "description": "Expand/Collapse tree node"
+    },
+    "treeviews.gotoParentNode": {
+      "type": "string",
+      "default": "p",
+      "description": "Go to parent node"
+    },
+    "treeviews.gotoFirstChild": {
+      "type": "string",
+      "default": "K",
+      "description": "Go to first child"
+    },
+    "treeviews.gotoLastChild": {
+      "type": "string",
+      "default": "J",
+      "description": "Go to last child"
+    },
+    "treeviews.gotoPrevSibling": {
+      "type": "string",
+      "default": "<C-k>",
+      "description": "Go to prev sibling"
+    },
+    "treeviews.gotoNextSibling": {
+      "type": "string",
+      "default": "<C-j>",
+      "description": "Go to next sibling"
+    },
+    "treeviews.executeCommand": {
+      "type": "string",
+      "default": "r",
+      "description": "Execute command for node"
     }
   }
 }

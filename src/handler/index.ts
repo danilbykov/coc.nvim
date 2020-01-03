@@ -20,6 +20,7 @@ import workspace from '../workspace'
 import CodeLensManager from './codelens'
 import Colors from './colors'
 import DocumentHighlighter from './documentHighlight'
+import { TreeViewsManager } from './treeviews'
 import Refactor from './refactor'
 import Search from './search'
 import debounce = require('debounce')
@@ -86,6 +87,7 @@ export default class Handler {
   private labels: { [key: string]: string } = {}
   private selectionRange: SelectionRange = null
   private signaturePosition: Position
+  private treeViewsManager: TreeViewsManager
 
   constructor(private nvim: Neovim) {
     this.getPreferences()
@@ -260,6 +262,7 @@ export default class Handler {
       return false
     }))
     commandManager.titles.set('editor.action.organizeImport', 'run organize import code action.')
+    this.treeViewsManager = new TreeViewsManager(nvim)
   }
 
   public async getCurrentFunctionSymbol(): Promise<string> {
@@ -1187,6 +1190,15 @@ export default class Handler {
       this.hoverPosition = [workspace.bufnr, arr[1], arr[2]]
       await this.nvim.command(`pedit coc://document`)
     }
+  }
+
+  public handleTreeViewAction(action: string | undefined, param: string | undefined): Promise<void> {
+    return this.treeViewsManager.handleAction(action, param)
+  }
+
+  public async revealTreeView(viewId: string): Promise<void> {
+    let { document, position } = await workspace.getCurrentState()
+    return this.treeViewsManager.revealDocInTreeView(viewId, document, position)
   }
 
   private getPreferences(): void {

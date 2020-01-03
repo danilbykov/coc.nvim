@@ -417,6 +417,10 @@ export default class Plugin extends EventEmitter {
           return await handler.getWordEdit()
         case 'addRanges':
           return await this.cursors.addRanges(args[1])
+        case 'treeViews':
+          return await handler.handleTreeViewAction(args[1], args[2])
+        case 'revealTreeView':
+          return await handler.revealTreeView(args[1])
         default:
           workspace.showMessage(`unknown action ${args[0]}`, 'error')
       }

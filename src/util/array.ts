@@ -21,6 +21,22 @@ export function group<T>(array: T[], size: number): T[][] {
   return res
 }
 
+export function groupBy<T>(array: T[], func: (t: T) => string): Map<string, T[]> {
+  const len = array.length
+  const res: Map<string, T[]> = new Map()
+  for (let i = 0; i < len; i++) {
+    const elem = array[i]
+    const key = func(elem)
+    let group = res.get(key)
+    if (group === undefined) {
+       group = []
+       res.set(key, group)
+    }
+    group.push(elem)
+  }
+  return res
+}
+
 /**
  * Removes duplicates from the given array. The optional keyFn allows to specify
  * how elements are checked for equalness by returning a unique string for each.

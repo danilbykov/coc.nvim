@@ -27,6 +27,7 @@ import { WorkspaceFolderWorkspaceMiddleware } from './workspaceFolders'
 import { SelectionRangeProviderMiddleware } from './selectionRange'
 import { omit } from '../util/lodash'
 import { Lazy } from '../util'
+import { TreeViewFeature } from '../tree/feature'
 
 const logger = require('../util/logger')('language-client-client')
 
@@ -3070,6 +3071,7 @@ class ExecuteCommandFeature
   }
 }
 
+
 export interface MessageTransports {
   reader: MessageReader
   writer: MessageWriter
@@ -3973,6 +3975,7 @@ export abstract class BaseLanguageClient {
     this.registerFeature(new RenameFeature(this))
     this.registerFeature(new DocumentLinkFeature(this))
     this.registerFeature(new ExecuteCommandFeature(this))
+    this.registerFeature(new TreeViewFeature(this))
   }
 
   private fillInitializeParams(params: InitializeParams): void {

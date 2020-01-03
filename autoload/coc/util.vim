@@ -260,6 +260,18 @@ function! coc#util#jumpTo(line, character) abort
   endif
 endfunction
 
+function! coc#util#jumpTo2(topLine, curLine, redraw)
+  let old_scrolloff = &scrolloff
+  let &scrolloff = 0
+  call cursor(a:topLine, 1)
+  normal! zt
+  call cursor(a:curLine, 1)
+  let &scrolloff = old_scrolloff
+  if a:redraw
+    redraw
+  endif
+endfunction
+
 function! coc#util#echo_messages(hl, msgs)
   if empty(a:msgs) | return | endif
   if a:hl !~# 'Error' && (mode() !~# '\v^(i|n)$')
